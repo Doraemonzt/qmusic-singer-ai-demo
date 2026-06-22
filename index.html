@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>我的歌手 AI - TME 智能体 Demo</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell" aria-label="我的歌手 AI 演示">
+      <section class="screen poster-screen home-screen" id="posterScreen" aria-labelledby="posterTitle">
+        <div class="poster-bg" aria-hidden="true">
+          <span class="poster-orbit one"></span>
+          <span class="poster-orbit two"></span>
+        </div>
+
+        <header class="home-top">
+          <div class="brand-logo" role="img" aria-label="我的歌手 AI Logo">
+            <span class="brand-mark" aria-hidden="true">
+              <span class="brand-disc"></span>
+              <span class="brand-wave"></span>
+            </span>
+            <span class="brand-copy">
+              <span class="brand-word">SingerAI</span>
+              <span class="brand-sub">我的歌手 AI</span>
+            </span>
+          </div>
+          <div class="home-actions" aria-label="首页操作">
+            <button class="member-pill" type="button"><span aria-hidden="true">◆</span>会员中心</button>
+            <button class="home-menu" type="button" aria-label="菜单"><span></span><span></span><span></span></button>
+          </div>
+        </header>
+
+        <section class="home-hero">
+          <div class="home-copy">
+            <h1 id="posterTitle">我的歌手 AI</h1>
+            <p class="poster-kicker">TME AI MUSIC AGENT</p>
+            <p class="poster-subtitle">选择你喜欢的平台歌手，生成一个会聊天、会唱歌、会讲创作故事的专属音乐智能体。</p>
+            <button class="poster-start" id="startCreateButton" type="button"><span aria-hidden="true">✦</span>开始制作<span aria-hidden="true">→</span></button>
+          </div>
+
+          <div class="home-visual" aria-hidden="true">
+            <span class="poster-avatar">
+              <span class="poster-avatar-halo"></span>
+              <span class="poster-headphones"></span>
+              <span class="poster-avatar-head"></span>
+              <span class="poster-avatar-body"></span>
+              <span class="poster-mic"></span>
+              <span class="poster-equalizer"><i></i><i></i><i></i><i></i></span>
+            </span>
+            <span class="listening-badge"><i></i>正在聆听你</span>
+          </div>
+        </section>
+
+        <section class="feature-panel" aria-label="核心能力">
+          <article class="feature-item"><span class="feature-icon music-note" aria-hidden="true"></span><strong>歌手风格生成</strong><em>打造专属声线</em></article>
+          <article class="feature-item"><span class="feature-icon chat-dot" aria-hidden="true"></span><strong>个性化聊天</strong><em>随时陪伴互动</em></article>
+          <article class="feature-item"><span class="feature-icon mic-icon" aria-hidden="true"></span><strong>歌曲演唱</strong><em>AI 演绎好听</em></article>
+          <article class="feature-item"><span class="feature-icon pen-icon" aria-hidden="true"></span><strong>故事共创</strong><em>共创音乐故事</em></article>
+        </section>
+
+        <section class="home-section hot-singers" aria-labelledby="hotSingerTitle">
+          <div class="home-section-title">
+            <h2 id="hotSingerTitle">热门歌手</h2>
+            <button type="button">查看全部<span aria-hidden="true">›</span></button>
+          </div>
+          <div class="singer-strip">
+            <article><img class="singer-card" src="assets/singers/jay.jpg" alt="周杰伦" /><strong>周杰伦</strong><em>华语流行天王</em></article>
+            <article><img class="singer-card" src="assets/singers/jj.jpg" alt="林俊杰" /><strong>林俊杰</strong><em>实力唱将</em></article>
+            <article><img class="singer-card" src="assets/singers/gem.jpg" alt="邓紫棋" /><strong>邓紫棋</strong><em>铁肺小天后</em></article>
+            <article><img class="singer-card" src="assets/singers/xue.jpg" alt="薛之谦" /><strong>薛之谦</strong><em>深情歌者</em></article>
+          </div>
+        </section>
+</section>
+      <section class="screen creator-screen" id="creatorScreen" aria-labelledby="creatorTitle" hidden>
+        <header class="app-header">
+          <button class="icon-button ghost" type="button" aria-label="返回">
+            <span class="icon-close" aria-hidden="true"></span>
+          </button>
+          <div class="header-title">
+            <span>创建 AI 智能体</span>
+            <strong id="creatorTitle">我的歌手 AI</strong>
+          </div>
+          <button class="text-action" id="autoFillButton" type="button">一键完善</button>
+        </header>
+<section class="artist-hero" aria-label="当前选择歌手">
+          <div class="portrait-stage" id="heroPortrait">
+            <img id="heroPortraitImage" src="assets/singers/xue.jpg" alt="薛之谦" />
+            <span class="portrait-glow" aria-hidden="true"></span>
+          </div>
+          <div class="hero-copy">
+            <p>基于平台歌手资产生成</p>
+            <h1 id="agentName">薛之谦 AI 音乐分身</h1>
+            <span id="auditTag">官方资料风格化 · 待用户确认</span>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="artistSelectTitle">
+          <div class="section-title">
+            <div>
+              <p>STEP 1</p>
+              <h2 id="artistSelectTitle">选择平台已有歌手</h2>
+            </div>
+            <span class="mini-badge">可二次定制</span>
+          </div>
+          <div class="artist-grid" id="artistGrid"></div>
+        </section>
+
+        <section class="panel profile-panel" aria-labelledby="profileTitle">
+          <div class="section-title">
+            <div>
+              <p>STEP 2</p>
+              <h2 id="profileTitle">自动填充智能体信息</h2>
+            </div>
+          </div>
+
+          <label class="field-row">
+            <span>名称</span>
+            <input id="nameInput" type="text" autocomplete="off" />
+          </label>
+
+          <label class="field-block">
+            <span>设定描述</span>
+            <textarea id="profileInput" rows="5"></textarea>
+          </label>
+
+          <div class="setting-list" aria-label="歌手智能体基础信息">
+            <div>
+              <span>代表作品</span>
+              <strong id="songsLine"></strong>
+            </div>
+            <div>
+              <span>擅长能力</span>
+              <strong id="skillsLine"></strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="customTitle">
+          <div class="section-title">
+            <div>
+              <p>STEP 3</p>
+              <h2 id="customTitle">按你的喜好微调</h2>
+            </div>
+          </div>
+
+          <div class="chip-group" aria-label="互动关系">
+            <span class="group-label">互动关系</span>
+            <div id="relationChips"></div>
+          </div>
+
+          <div class="chip-group" aria-label="回复风格">
+            <span class="group-label">回复风格</span>
+            <div id="toneChips"></div>
+          </div>
+
+          <div class="chip-group" aria-label="听歌偏好">
+            <span class="group-label">听歌偏好</span>
+            <div id="preferenceChips"></div>
+          </div>
+        </section>
+
+        <button class="create-button" id="createAgentButton" type="button">
+          创建智能体并开始互动
+        </button>
+      </section>
+
+      <section class="screen chat-screen" id="chatScreen" aria-labelledby="chatTitle" hidden>
+        <div class="chat-backdrop" id="chatBackdrop" aria-hidden="true"><img id="chatPortraitImage" class="chat-portrait" src="assets/singers/xue.jpg" alt="" /></div>
+        <header class="chat-header">
+          <button class="icon-button translucent" id="backToCreator" type="button" aria-label="返回创建页">
+            <span class="icon-menu" aria-hidden="true"></span>
+          </button>
+          <div>
+            <h2 id="chatTitle">薛之谦 AI 音乐分身</h2>
+            <span id="chatStatus">已基于你的偏好生成</span>
+          </div>
+          <button class="icon-button translucent" id="voiceToggle" type="button" aria-label="声音开关">
+            <span class="icon-sound" aria-hidden="true"></span>
+          </button>
+        </header>
+
+        <div class="agent-intro">
+          <span id="agentMode">朋友 · 幽默 · 多讲歌词</span>
+          <p id="agentOpening">我已经准备好陪你听歌了。今天想听点嘴硬的，还是想听点能把情绪放下的？</p>
+        </div>
+
+        <div class="chat-feed" id="chatFeed" aria-live="polite"></div>
+
+        <div class="quick-actions" id="quickActions" aria-label="快捷输入"></div>
+
+        <form class="composer" id="composer">
+          <input id="messageInput" type="text" placeholder="发消息或按住说话..." autocomplete="off" />
+          <button type="submit" aria-label="发送">
+            <span class="icon-send" aria-hidden="true"></span>
+          </button>
+        </form>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
