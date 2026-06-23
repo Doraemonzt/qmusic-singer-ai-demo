@@ -1549,8 +1549,8 @@ button {
 .listening-badge {
   position: absolute;
   right: auto;
-  bottom: 3.25rem;
-  left: 50%;
+  bottom: 1.15rem;
+  left: calc(50% - 4.65rem);
   display: inline-flex;
   align-items: center;
   gap: 0.42rem;
@@ -1560,9 +1560,9 @@ button {
   color: rgba(255, 255, 255, 0.88);
   font-size: 0.76rem;
   font-weight: 720;
-  background: rgba(6, 26, 45, 0.35);
+  background: rgba(6, 26, 45, 0.46);
   backdrop-filter: blur(0.8rem);
-  transform: translateX(-50%);
+  transform: none;
 }
 
 .listening-badge i {
