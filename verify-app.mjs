@@ -34,7 +34,7 @@ const loadedSingerImages = await page.locator(".singer-strip img.singer-card").e
 const singerCount = await page.locator(".singer-strip article").count();
 const tagCount = await page.locator(".poster-tags span").count();
 const workCardCount = await page.locator(".work-card").count();
-const memberText = await page.locator(".member-pill").textContent();
+const homeActionCount = await page.locator(".home-actions").count();
 
 if (featureCount !== 4) {
   throw new Error(`Expected 4 homepage feature cards, got: ${featureCount}`);
@@ -48,8 +48,8 @@ if (tagCount !== 0) {
   throw new Error(`Poster tags should be removed from homepage, got: ${tagCount}`);
 }
 
-if (!memberText.includes("会员中心")) {
-  throw new Error(`Expected top member action, got: ${memberText}`);
+if (homeActionCount !== 0) {
+  throw new Error(`Homepage top action buttons should be removed, got: ${homeActionCount}`);
 }
 if (posterTitle !== "我的歌手 AI") {
   throw new Error(`Unexpected poster title: ${posterTitle}`);
@@ -194,4 +194,4 @@ if (hasHorizontalOverflow) {
 await page.screenshot({ path: "C:/tmp/qmusic-singer-ai-poster-demo.png", fullPage: true });
 await browser.close();
 
-console.log("Verified created AI singer drawer, real singer portraits, selected creator and chat singer photos, mobile homepage layout without works section, homepage logo, poster-first H5 flow, creator setup, preference customization, chat generation, song cards, and mobile layout.");
+console.log("Verified homepage without top action buttons, created AI singer drawer, real singer portraits, selected creator and chat singer photos, mobile homepage layout without works section, homepage logo, poster-first H5 flow, creator setup, preference customization, chat generation, song cards, and mobile layout.");

@@ -2309,3 +2309,7 @@ img.singer-card {
   font-weight: 760;
   background: rgba(255, 255, 255, 0.06);
 }
+/* Homepage top actions removed */
+.home-screen .home-top {
+  justify-content: flex-start;
+}
