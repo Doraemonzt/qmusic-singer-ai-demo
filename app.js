@@ -104,6 +104,8 @@ const state = {
   preference: "讲创作故事",
   creatorStep: 0,
   messages: [],
+  chatSessionArtistId: null,
+  isEditingExistingAgent: false,
 };
 
 const elements = {
@@ -222,6 +224,11 @@ function setCreatorStep(step) {
 }
 
 function goHome() {
+  if (state.isEditingExistingAgent) {
+    openChat();
+    return;
+  }
+
   elements.creatorScreen.hidden = true;
   elements.chatScreen.hidden = true;
   elements.posterScreen.hidden = false;
@@ -390,18 +397,28 @@ function setAgentListOpen(isOpen) {
   }
 }
 
+function makeIntroMessage(customName, artist) {
+  return {
+    role: "agent",
+    kind: "intro",
+    text: `我是${customName}。我会基于${artist.name}的公开音乐资料和你的偏好来陪你听歌、讲创作故事，也会提醒自己不冒充真人私下发言。`,
+  };
+}
 function switchCreatedAgent(artistId) {
+  state.isEditingExistingAgent = false;
   setArtist(artistId);
   setAgentListOpen(false);
   openChat();
 }
 function openAgentSettings() {
+  state.isEditingExistingAgent = true;
   elements.chatScreen.hidden = true;
   elements.posterScreen.hidden = true;
   elements.creatorScreen.hidden = false;
   setCreatorStep(1);
 }
 function openCreator() {
+  state.isEditingExistingAgent = false;
   elements.posterScreen.hidden = true;
   elements.chatScreen.hidden = true;
   elements.creatorScreen.hidden = false;
@@ -410,6 +427,12 @@ function openCreator() {
 function openChat() {
   const artist = activeArtist();
   const customName = elements.nameInput.value.trim() || artist.agentName;
+  const shouldPreserveMessages =
+    state.isEditingExistingAgent &&
+    state.messages.length > 0 &&
+    state.chatSessionArtistId === state.artistId;
+  const introMessage = makeIntroMessage(customName, artist);
+
   elements.creatorScreen.hidden = true;
   elements.chatScreen.hidden = false;
   elements.chatTitle.textContent = customName;
@@ -419,15 +442,21 @@ function openChat() {
   elements.chatPortraitImage.src = artistImage(artist.id);
   elements.agentMode.textContent = `${state.relation} · ${state.tone} · ${state.preference}`;
   elements.agentOpening.textContent = artist.opening;
-  state.messages = [
-    {
-      role: "agent",
-      text: `我是${customName}。我会基于${artist.name}的公开音乐资料和你的偏好来陪你听歌、讲创作故事，也会提醒自己不冒充真人私下发言。`,
-    },
-  ];
+
+  if (shouldPreserveMessages) {
+    const existingIntro = state.messages.find((message) => message.kind === "intro");
+
+    if (existingIntro) {
+      existingIntro.text = introMessage.text;
+    }
+  } else {
+    state.messages = [introMessage];
+  }
+
+  state.chatSessionArtistId = state.artistId;
+  state.isEditingExistingAgent = false;
   renderChat();
 }
-
 function closeChat() {
   elements.chatScreen.hidden = true;
   elements.creatorScreen.hidden = false;

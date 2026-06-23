@@ -2349,8 +2349,9 @@ img.singer-card {
 
 .home-screen .listening-badge {
   bottom: 2rem;
-  left: calc(50% - 5.5rem);
+  left: 50%;
   z-index: 2;
+  transform: translateX(-50%);
 }
 
 @media (max-width: 390px) {
@@ -2360,7 +2361,7 @@ img.singer-card {
 
   .home-screen .listening-badge {
     bottom: 1.7rem;
-    left: calc(50% - 4.8rem);
+    left: 50%;
   }
 }
 
@@ -2717,4 +2718,20 @@ img.singer-card {
 .icon-settings::after {
   top: 0.35rem;
   right: 0.2rem;
+}
+/* Move chat intro closer to the singer portrait */
+.chat-screen .agent-intro {
+  margin-top: min(31vh, 16rem);
+}
+
+@media (max-width: 360px) {
+  .chat-screen .agent-intro {
+    margin-top: min(30vh, 14rem);
+  }
+}
+
+/* Keep chat messages close to the intro area */
+.chat-screen .chat-feed {
+  align-content: start;
+  padding-top: 0;
 }
