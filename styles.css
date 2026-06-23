@@ -2313,3 +2313,16 @@ img.singer-card {
 .home-screen .home-top {
   justify-content: flex-start;
 }
+/* Keep homepage title on one line */
+.home-screen .home-copy h1 {
+  max-width: 100%;
+  font-size: clamp(1.9rem, 8.6vw, 2.55rem);
+  line-height: 1.02;
+  white-space: nowrap;
+}
+
+@media (max-width: 390px) {
+  .home-screen .home-copy h1 {
+    font-size: clamp(1.72rem, 8.1vw, 2.2rem);
+  }
+}
