@@ -168,7 +168,7 @@
       <section class="screen chat-screen" id="chatScreen" aria-labelledby="chatTitle" hidden>
         <div class="chat-backdrop" id="chatBackdrop" aria-hidden="true"><img id="chatPortraitImage" class="chat-portrait" src="assets/singers/xue.jpg" alt="" /></div>
         <header class="chat-header">
-          <button class="icon-button translucent" id="backToCreator" type="button" aria-label="返回创建页">
+          <button class="icon-button translucent" id="backToCreator" type="button" aria-label="已创建 AI 歌手列表">
             <span class="icon-menu" aria-hidden="true"></span>
           </button>
           <div>
@@ -189,6 +189,21 @@
 
         <div class="quick-actions" id="quickActions" aria-label="快捷输入"></div>
 
+
+        <div class="agent-list-backdrop" id="agentListBackdrop" hidden>
+          <section class="agent-list-sheet" aria-labelledby="agentListTitle">
+            <div class="sheet-handle" aria-hidden="true"></div>
+            <div class="agent-list-head">
+              <div>
+                <span>已创建</span>
+                <h3 id="agentListTitle">我的 AI 歌手</h3>
+              </div>
+              <button class="sheet-close" id="agentListClose" type="button" aria-label="关闭列表">×</button>
+            </div>
+            <div class="agent-list" id="agentList"></div>
+            <button class="new-agent-link" id="createMoreAgent" type="button">+ 创建新的 AI 歌手</button>
+          </section>
+        </div>
         <form class="composer" id="composer">
           <input id="messageInput" type="text" placeholder="发消息或按住说话..." autocomplete="off" />
           <button type="submit" aria-label="发送">

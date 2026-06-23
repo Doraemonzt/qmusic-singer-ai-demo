@@ -134,6 +134,10 @@ const elements = {
   agentOpening: document.querySelector("#agentOpening"),
   chatFeed: document.querySelector("#chatFeed"),
   quickActions: document.querySelector("#quickActions"),
+  agentListBackdrop: document.querySelector("#agentListBackdrop"),
+  agentList: document.querySelector("#agentList"),
+  agentListClose: document.querySelector("#agentListClose"),
+  createMoreAgent: document.querySelector("#createMoreAgent"),
   composer: document.querySelector("#composer"),
   messageInput: document.querySelector("#messageInput"),
   voiceToggle: document.querySelector("#voiceToggle"),
@@ -314,6 +318,37 @@ function submitPrompt(text) {
 }
 
 
+
+function renderCreatedAgents() {
+  elements.agentList.innerHTML = artists
+    .map(
+      (artist) => `
+        <button class="agent-list-item" type="button" data-agent-id="${artist.id}" aria-pressed="${artist.id === state.artistId}">
+          <img src="${artistImage(artist.id)}" alt="${artist.name}" />
+          <span>
+            <strong>${artist.agentName}</strong>
+            <em>${artist.songs[0]} · ${artist.skills[0]}</em>
+          </span>
+          <small>${artist.id === state.artistId ? "当前" : "进入"}</small>
+        </button>
+      `,
+    )
+    .join("");
+}
+
+function setAgentListOpen(isOpen) {
+  elements.agentListBackdrop.hidden = !isOpen;
+
+  if (isOpen) {
+    renderCreatedAgents();
+  }
+}
+
+function switchCreatedAgent(artistId) {
+  setArtist(artistId);
+  setAgentListOpen(false);
+  openChat();
+}
 function openCreator() {
   elements.posterScreen.hidden = true;
   elements.creatorScreen.hidden = false;
@@ -382,7 +417,24 @@ elements.nameInput.addEventListener("input", () => {
 elements.autoFillButton.addEventListener("click", resetArtistProfile);
 elements.startCreateButton.addEventListener("click", openCreator);
 elements.createAgentButton.addEventListener("click", openChat);
-elements.backToCreator.addEventListener("click", closeChat);
+elements.backToCreator.addEventListener("click", () => setAgentListOpen(true));
+elements.agentListClose.addEventListener("click", () => setAgentListOpen(false));
+elements.agentListBackdrop.addEventListener("click", (event) => {
+  if (event.target === elements.agentListBackdrop) {
+    setAgentListOpen(false);
+  }
+});
+elements.agentList.addEventListener("click", (event) => {
+  const agentButton = event.target.closest("[data-agent-id]");
+
+  if (agentButton) {
+    switchCreatedAgent(agentButton.dataset.agentId);
+  }
+});
+elements.createMoreAgent.addEventListener("click", () => {
+  setAgentListOpen(false);
+  closeChat();
+});
 
 elements.voiceToggle.addEventListener("click", () => {
   state.isVoiceOn = !state.isVoiceOn;

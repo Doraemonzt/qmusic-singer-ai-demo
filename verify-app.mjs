@@ -158,6 +158,27 @@ await page.waitForFunction(() => document.querySelectorAll(".song-card").length 
 
 const latestSongCard = await page.locator(".song-card").last().textContent();
 
+await page.locator("#backToCreator").click();
+await page.waitForSelector("#agentListBackdrop:not([hidden])");
+
+const createdAgentCount = await page.locator(".agent-list-item").count();
+
+if (createdAgentCount !== 4) {
+  throw new Error(`Expected 4 created AI singer entries, got: ${createdAgentCount}`);
+}
+
+await page.locator("[data-agent-id='xue']").click();
+await page.waitForFunction(() => document.querySelector("#chatPortraitImage")?.getAttribute("src")?.includes("xue.jpg"));
+
+const switchedPortrait = await page.locator("#chatPortraitImage").evaluate((image) => ({
+  src: image.getAttribute("src"),
+  complete: image.complete,
+  width: image.naturalWidth,
+}));
+
+if (!switchedPortrait.src.includes("xue.jpg") || !switchedPortrait.complete || switchedPortrait.width === 0) {
+  throw new Error(`Expected created AI singer switch to update portrait, got: ${JSON.stringify(switchedPortrait)}`);
+}
 if (!latestSongCard.includes("七里香")) {
   throw new Error(`Expected a secondary song recommendation, got: ${latestSongCard}`);
 }
@@ -173,4 +194,4 @@ if (hasHorizontalOverflow) {
 await page.screenshot({ path: "C:/tmp/qmusic-singer-ai-poster-demo.png", fullPage: true });
 await browser.close();
 
-console.log("Verified real singer portraits, selected creator and chat singer photos, mobile homepage layout without works section, homepage logo, poster-first H5 flow, creator setup, preference customization, chat generation, song cards, and mobile layout.");
+console.log("Verified created AI singer drawer, real singer portraits, selected creator and chat singer photos, mobile homepage layout without works section, homepage logo, poster-first H5 flow, creator setup, preference customization, chat generation, song cards, and mobile layout.");
