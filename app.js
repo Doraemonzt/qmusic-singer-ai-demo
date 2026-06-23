@@ -102,14 +102,19 @@ const state = {
   relation: "朋友",
   tone: "更幽默",
   preference: "讲创作故事",
+  creatorStep: 0,
   messages: [],
-  isVoiceOn: true,
 };
 
 const elements = {
   posterScreen: document.querySelector("#posterScreen"),
   creatorScreen: document.querySelector("#creatorScreen"),
   chatScreen: document.querySelector("#chatScreen"),
+  creatorCloseButton: document.querySelector("#creatorCloseButton"),
+  creatorSteps: document.querySelectorAll("[data-creator-step]"),
+  stepDots: document.querySelectorAll("[data-step-dot]"),
+  creatorPrevButton: document.querySelector("#creatorPrevButton"),
+  creatorNextButton: document.querySelector("#creatorNextButton"),
   artistGrid: document.querySelector("#artistGrid"),
   heroPortrait: document.querySelector("#heroPortrait"),
   heroPortraitImage: document.querySelector("#heroPortraitImage"),
@@ -123,6 +128,9 @@ const elements = {
   toneChips: document.querySelector("#toneChips"),
   preferenceChips: document.querySelector("#preferenceChips"),
   createAgentButton: document.querySelector("#createAgentButton"),
+  completionPortraitImage: document.querySelector("#completionPortraitImage"),
+  completeTitle: document.querySelector("#completeTitle"),
+  completeMode: document.querySelector("#completeMode"),
   startCreateButton: document.querySelector("#startCreateButton"),
   autoFillButton: document.querySelector("#autoFillButton"),
   backToCreator: document.querySelector("#backToCreator"),
@@ -185,6 +193,40 @@ function renderChipGroup(target, key) {
 }
 
 
+function renderCreatorStep() {
+  elements.creatorSteps.forEach((step) => {
+    const isActive = Number(step.dataset.creatorStep) === state.creatorStep;
+    step.classList.toggle("is-active", isActive);
+    step.hidden = !isActive;
+  });
+
+  elements.stepDots.forEach((dot) => {
+    const dotStep = Number(dot.dataset.stepDot);
+    dot.classList.toggle("is-active", dotStep === state.creatorStep);
+    dot.classList.toggle("is-done", dotStep < state.creatorStep);
+    dot.setAttribute("aria-current", dotStep === state.creatorStep ? "step" : "false");
+  });
+
+  elements.creatorPrevButton.hidden = state.creatorStep === 0;
+  elements.creatorNextButton.hidden = state.creatorStep === elements.creatorSteps.length - 1;
+  elements.createAgentButton.hidden = state.creatorStep !== elements.creatorSteps.length - 1;
+  elements.autoFillButton.hidden = state.creatorStep !== 1;
+}
+
+function setCreatorStep(step) {
+  const maxStep = elements.creatorSteps.length - 1;
+  state.creatorStep = Math.max(0, Math.min(step, maxStep));
+  renderCreator();
+  renderCreatorStep();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function goHome() {
+  elements.creatorScreen.hidden = true;
+  elements.chatScreen.hidden = true;
+  elements.posterScreen.hidden = false;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 function renderCreator() {
   const artist = activeArtist();
   elements.heroPortrait.style.setProperty("--artist-color", artist.color);
@@ -197,6 +239,10 @@ function renderCreator() {
   elements.songsLine.textContent = artist.songs.join(" / ");
   elements.skillsLine.textContent = artist.skills.join(" / ");
   elements.auditTag.textContent = `${artist.name} · 公开资料风格化 · 可继续微调`;
+  elements.completionPortraitImage.src = artistImage(artist.id);
+  elements.completionPortraitImage.alt = artist.name;
+  elements.completeTitle.textContent = `${elements.nameInput.value || artist.agentName}已准备好`;
+  elements.completeMode.textContent = `${state.relation} · ${state.tone} · ${state.preference}`;
   renderArtists();
   renderChipGroup(elements.relationChips, "relation");
   renderChipGroup(elements.toneChips, "tone");
@@ -218,7 +264,7 @@ function setArtist(artistId) {
 
 function setOption(key, value) {
   state[key] = value;
-  renderChipGroup(elements[`${key}Chips`], key);
+  renderCreator();
 }
 
 function renderQuickPrompts() {
@@ -349,10 +395,17 @@ function switchCreatedAgent(artistId) {
   setAgentListOpen(false);
   openChat();
 }
-function openCreator() {
+function openAgentSettings() {
+  elements.chatScreen.hidden = true;
   elements.posterScreen.hidden = true;
   elements.creatorScreen.hidden = false;
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  setCreatorStep(1);
+}
+function openCreator() {
+  elements.posterScreen.hidden = true;
+  elements.chatScreen.hidden = true;
+  elements.creatorScreen.hidden = false;
+  setCreatorStep(0);
 }
 function openChat() {
   const artist = activeArtist();
@@ -371,11 +424,6 @@ function openChat() {
       role: "agent",
       text: `我是${customName}。我会基于${artist.name}的公开音乐资料和你的偏好来陪你听歌、讲创作故事，也会提醒自己不冒充真人私下发言。`,
     },
-    {
-      role: "agent",
-      text: artist.recommendation.lyric,
-      song: artist.recommendation,
-    },
   ];
   renderChat();
 }
@@ -383,6 +431,7 @@ function openChat() {
 function closeChat() {
   elements.chatScreen.hidden = true;
   elements.creatorScreen.hidden = false;
+  setCreatorStep(0);
 }
 
 elements.artistGrid.addEventListener("click", (event) => {
@@ -411,10 +460,15 @@ document.addEventListener("click", (event) => {
 });
 
 elements.nameInput.addEventListener("input", () => {
-  elements.agentName.textContent = elements.nameInput.value || activeArtist().agentName;
+  const artist = activeArtist();
+  elements.agentName.textContent = elements.nameInput.value || artist.agentName;
+  elements.completeTitle.textContent = `${elements.nameInput.value || artist.agentName}已准备好`;
 });
 
 elements.autoFillButton.addEventListener("click", resetArtistProfile);
+elements.creatorCloseButton.addEventListener("click", goHome);
+elements.creatorPrevButton.addEventListener("click", () => setCreatorStep(state.creatorStep - 1));
+elements.creatorNextButton.addEventListener("click", () => setCreatorStep(state.creatorStep + 1));
 elements.startCreateButton.addEventListener("click", openCreator);
 elements.createAgentButton.addEventListener("click", openChat);
 elements.backToCreator.addEventListener("click", () => setAgentListOpen(true));
@@ -436,10 +490,7 @@ elements.createMoreAgent.addEventListener("click", () => {
   closeChat();
 });
 
-elements.voiceToggle.addEventListener("click", () => {
-  state.isVoiceOn = !state.isVoiceOn;
-  elements.voiceToggle.setAttribute("aria-pressed", String(state.isVoiceOn));
-});
+elements.voiceToggle.addEventListener("click", openAgentSettings);
 
 elements.composer.addEventListener("submit", (event) => {
   event.preventDefault();

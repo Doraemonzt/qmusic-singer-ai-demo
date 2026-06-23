@@ -2326,3 +2326,395 @@ img.singer-card {
     font-size: clamp(1.72rem, 8.1vw, 2.2rem);
   }
 }
+/* Homepage AI singer image replacement */
+.home-screen .home-visual {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+.home-ai-singer {
+  display: block;
+  width: min(48vw, 13rem);
+  aspect-ratio: 0.82;
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 1.35rem;
+  object-fit: cover;
+  object-position: center 42%;
+  box-shadow:
+    0 1.1rem 2.4rem rgba(2, 8, 23, 0.24),
+    inset 0 0.08rem 0 rgba(255, 255, 255, 0.34);
+  transform: translateY(-1.15rem);
+}
+
+.home-screen .listening-badge {
+  bottom: 2rem;
+  left: calc(50% - 5.5rem);
+  z-index: 2;
+}
+
+@media (max-width: 390px) {
+  .home-ai-singer {
+    width: min(46vw, 11.2rem);
+  }
+
+  .home-screen .listening-badge {
+    bottom: 1.7rem;
+    left: calc(50% - 4.8rem);
+  }
+}
+
+/* Step-by-step creator flow */
+.creator-screen {
+  grid-template-rows: auto auto 1fr auto;
+  min-height: 100dvh;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(39, 103, 255, 0.16), transparent 18rem),
+    #f4f7fb;
+}
+
+.creator-progress {
+  display: grid;
+  grid-template-columns: auto 1fr auto 1fr auto 1fr auto;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.1rem 0.35rem 0.25rem;
+}
+
+.step-dot {
+  display: grid;
+  place-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border: 1px solid #d8e0ef;
+  border-radius: 50%;
+  color: #7b8494;
+  font-size: 0.78rem;
+  font-weight: 820;
+  background: #ffffff;
+}
+
+.step-dot.is-active,
+.step-dot.is-done {
+  border-color: transparent;
+  color: #ffffff;
+  background: linear-gradient(135deg, #2767ff, #15c8b5);
+  box-shadow: 0 0.55rem 1.3rem rgba(39, 103, 255, 0.22);
+}
+
+.step-line {
+  height: 0.12rem;
+  border-radius: 999px;
+  background: #dfe6f1;
+}
+
+.creator-step {
+  display: none;
+  align-content: start;
+  gap: 0.9rem;
+  min-height: calc(100dvh - 11rem);
+}
+
+.creator-step.is-active {
+  display: grid;
+}
+
+.step-hero-copy {
+  display: grid;
+  gap: 0.32rem;
+  padding: 0.35rem 0.15rem 0.1rem;
+}
+
+.step-hero-copy p {
+  margin: 0;
+  color: #2767ff;
+  font-size: 0.75rem;
+  font-weight: 850;
+}
+
+.step-hero-copy h2 {
+  margin: 0;
+  font-size: 1.45rem;
+  line-height: 1.2;
+}
+
+.step-hero-copy span {
+  color: #6b7280;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.creator-step .artist-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.78rem;
+}
+
+.creator-step .artist-card {
+  gap: 0.5rem;
+  min-height: 10.8rem;
+  padding: 0.75rem 0.65rem;
+  border-radius: 1rem;
+  box-shadow: 0 0.8rem 2rem rgba(34, 48, 78, 0.08);
+}
+
+.creator-step .mini-portrait {
+  width: min(100%, 5.2rem);
+  aspect-ratio: 0.82;
+  border-radius: 0.88rem;
+}
+
+.creator-step .artist-card strong {
+  font-size: 0.95rem;
+}
+
+.creator-step .artist-card em {
+  font-size: 0.74rem;
+}
+
+.creator-step .artist-hero {
+  padding-top: 0.2rem;
+}
+
+.preference-panel {
+  gap: 1.05rem;
+  padding: 1.1rem;
+}
+
+.preference-panel .group-label {
+  color: #4b5563;
+  font-size: 0.82rem;
+}
+
+.preference-panel .choice-chip {
+  min-height: 2.45rem;
+  padding: 0 0.92rem;
+}
+
+.complete-step {
+  align-content: center;
+}
+
+.completion-card {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.55rem;
+  overflow: hidden;
+  padding: 1.55rem 1rem 1.35rem;
+  border-radius: 1.25rem;
+  color: #ffffff;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(103, 242, 255, 0.34), transparent 9rem),
+    linear-gradient(145deg, #2767ff 0%, #18b7ae 62%, #10223d 100%);
+  box-shadow: 0 1.2rem 3rem rgba(39, 103, 255, 0.22);
+}
+
+.complete-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 36%, rgba(255, 255, 255, 0.22), transparent 9rem);
+}
+
+.completion-card img {
+  position: relative;
+  z-index: 1;
+  width: min(48vw, 9.8rem);
+  aspect-ratio: 0.82;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 1.1rem;
+  object-fit: cover;
+  object-position: center top;
+  box-shadow: 0 1rem 2rem rgba(2, 8, 23, 0.22);
+}
+
+.completion-card p,
+.completion-card h2,
+.completion-card span {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+}
+
+.completion-card p {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.78rem;
+  font-weight: 820;
+}
+
+.completion-card h2 {
+  font-size: 1.35rem;
+  line-height: 1.28;
+}
+
+.completion-card > span:not(.complete-glow) {
+  padding: 0.38rem 0.68rem;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.78rem;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.completion-summary {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.95rem 1rem;
+  border-radius: 1rem;
+  background: #ffffff;
+  box-shadow: 0 0.8rem 2.2rem rgba(46, 62, 92, 0.08);
+}
+
+.completion-summary strong {
+  font-size: 0.96rem;
+}
+
+.completion-summary span {
+  color: #6b7280;
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.creator-nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  gap: 0.65rem;
+  margin: 0 -1rem -1.4rem;
+  padding: 0.75rem 1rem calc(0.85rem + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, rgba(244, 247, 251, 0), rgba(244, 247, 251, 0.96) 28%, #f4f7fb 100%);
+  backdrop-filter: blur(0.7rem);
+}
+
+.creator-prev,
+.creator-next,
+.creator-nav .create-button {
+  flex: 1;
+  min-height: 3.15rem;
+  border-radius: 1rem;
+  font-size: 0.98rem;
+  font-weight: 820;
+}
+
+.creator-prev {
+  border: 1px solid #d8e0ef;
+  color: #394153;
+  background: #ffffff;
+}
+
+.creator-next,
+.creator-nav .create-button {
+  position: static;
+  border: 0;
+  color: #ffffff;
+  background: linear-gradient(135deg, #2767ff, #15c8b5);
+  box-shadow: 0 0.8rem 2rem rgba(39, 103, 255, 0.24);
+}
+
+.creator-nav .create-button[hidden],
+.creator-prev[hidden],
+.creator-next[hidden] {
+  display: none;
+}
+
+@media (max-width: 360px) {
+  .creator-step .artist-card {
+    min-height: 10rem;
+  }
+
+  .step-hero-copy h2 {
+    font-size: 1.32rem;
+  }
+}
+/* Step 1 keeps selected artist preview above singer selection */
+.artist-select-step {
+  gap: 0.72rem;
+}
+
+.artist-select-step .artist-hero {
+  padding: 0.25rem 0 0.15rem;
+}
+
+.artist-select-step .hero-copy h1 {
+  font-size: clamp(1.55rem, 8vw, 2.15rem);
+}
+
+.artist-select-panel {
+  gap: 0.78rem;
+  padding: 1rem;
+  border-radius: 1.15rem;
+}
+
+.artist-select-step .artist-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.artist-select-step .artist-card {
+  gap: 0.38rem;
+  min-height: 6.75rem;
+  padding: 0.55rem 0.35rem;
+  border-radius: 0.78rem;
+  box-shadow: none;
+}
+
+.artist-select-step .mini-portrait {
+  width: 2.65rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.artist-select-step .artist-card strong {
+  font-size: 0.83rem;
+}
+
+.artist-select-step .artist-card em {
+  font-size: 0.68rem;
+}
+
+@media (max-width: 360px) {
+  .artist-select-step .artist-grid {
+    gap: 0.42rem;
+  }
+
+  .artist-select-step .artist-card {
+    min-height: 6.45rem;
+    padding-inline: 0.24rem;
+  }
+
+  .artist-select-step .mini-portrait {
+    width: 2.35rem;
+  }
+}
+/* Chat header agent settings icon */
+.icon-settings {
+  position: relative;
+  display: block;
+  width: 1.35rem;
+  height: 1.05rem;
+  background:
+    linear-gradient(currentColor, currentColor) 0 0.16rem / 100% 0.13rem no-repeat,
+    linear-gradient(currentColor, currentColor) 0 0.46rem / 100% 0.13rem no-repeat,
+    linear-gradient(currentColor, currentColor) 0 0.76rem / 100% 0.13rem no-repeat;
+}
+
+.icon-settings::before,
+.icon-settings::after {
+  position: absolute;
+  width: 0.34rem;
+  height: 0.34rem;
+  border-radius: 50%;
+  background: currentColor;
+  content: "";
+}
+
+.icon-settings::before {
+  top: 0.05rem;
+  left: 0.18rem;
+  box-shadow: 0.72rem 0.6rem 0 currentColor;
+}
+
+.icon-settings::after {
+  top: 0.35rem;
+  right: 0.2rem;
+}

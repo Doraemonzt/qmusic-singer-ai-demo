@@ -36,14 +36,7 @@
           </div>
 
           <div class="home-visual" aria-hidden="true">
-            <span class="poster-avatar">
-              <span class="poster-avatar-halo"></span>
-              <span class="poster-headphones"></span>
-              <span class="poster-avatar-head"></span>
-              <span class="poster-avatar-body"></span>
-              <span class="poster-mic"></span>
-              <span class="poster-equalizer"><i></i><i></i><i></i><i></i></span>
-            </span>
+            <img class="home-ai-singer" src="assets/home-ai-singer.png" alt="" />
             <span class="listening-badge"><i></i>正在聆听你</span>
           </div>
         </section>
@@ -70,7 +63,7 @@
 </section>
       <section class="screen creator-screen" id="creatorScreen" aria-labelledby="creatorTitle" hidden>
         <header class="app-header">
-          <button class="icon-button ghost" type="button" aria-label="返回">
+          <button class="icon-button ghost" id="creatorCloseButton" type="button" aria-label="返回">
             <span class="icon-close" aria-hidden="true"></span>
           </button>
           <div class="header-title">
@@ -79,86 +72,117 @@
           </div>
           <button class="text-action" id="autoFillButton" type="button">一键完善</button>
         </header>
-<section class="artist-hero" aria-label="当前选择歌手">
-          <div class="portrait-stage" id="heroPortrait">
-            <img id="heroPortraitImage" src="assets/singers/xue.jpg" alt="薛之谦" />
-            <span class="portrait-glow" aria-hidden="true"></span>
+        <div class="creator-progress" aria-label="创建进度">
+          <span class="step-dot is-active" data-step-dot="0">1</span>
+          <span class="step-line" aria-hidden="true"></span>
+          <span class="step-dot" data-step-dot="1">2</span>
+          <span class="step-line" aria-hidden="true"></span>
+          <span class="step-dot" data-step-dot="2">3</span>
+          <span class="step-line" aria-hidden="true"></span>
+          <span class="step-dot" data-step-dot="3">4</span>
+        </div>
+
+        <section class="creator-step artist-select-step is-active" data-creator-step="0" aria-labelledby="artistSelectTitle">
+          <section class="artist-hero" aria-label="当前选择歌手">
+            <div class="portrait-stage" id="heroPortrait">
+              <img id="heroPortraitImage" src="assets/singers/xue.jpg" alt="" />
+              <span class="portrait-glow" aria-hidden="true"></span>
+            </div>
+            <div class="hero-copy">
+              <p>基于平台歌手资产生成</p>
+              <h1 id="agentName">薛之谦 AI 音乐分身</h1>
+              <span id="auditTag">公开资料风格化 · 可继续微调</span>
+            </div>
+          </section>
+          <section class="panel artist-select-panel">
+            <div class="section-title">
+              <div>
+                <p>STEP 1</p>
+                <h2 id="artistSelectTitle">选择平台已有歌手</h2>
+              </div>
+              <span class="mini-badge">可二次定制</span>
+            </div>
+            <div class="artist-grid" id="artistGrid"></div>
+          </section>
+        </section>
+
+        <section class="creator-step" data-creator-step="1" aria-labelledby="profileTitle">
+          <section class="panel profile-panel">
+            <div class="section-title">
+              <div>
+                <p>STEP 2</p>
+                <h2 id="profileTitle">确认智能体身份</h2>
+              </div>
+              <span class="mini-badge">可手动修改</span>
+            </div>
+
+            <label class="field-row">
+              <span>名称</span>
+              <input id="nameInput" type="text" autocomplete="off" />
+            </label>
+
+            <label class="field-block">
+              <span>设定描述</span>
+              <textarea id="profileInput" rows="5"></textarea>
+            </label>
+
+            <div class="setting-list" aria-label="歌手智能体基础信息">
+              <div>
+                <span>代表作品</span>
+                <strong id="songsLine"></strong>
+              </div>
+              <div>
+                <span>擅长能力</span>
+                <strong id="skillsLine"></strong>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section class="creator-step" data-creator-step="2" aria-labelledby="customTitle">
+          <div class="step-hero-copy">
+            <p>STEP 3</p>
+            <h2 id="customTitle">按你的喜好微调</h2>
+            <span>定义它陪你聊天、讲歌、推荐歌曲时的语气和关系感。</span>
           </div>
-          <div class="hero-copy">
-            <p>基于平台歌手资产生成</p>
-            <h1 id="agentName">薛之谦 AI 音乐分身</h1>
-            <span id="auditTag">官方资料风格化 · 待用户确认</span>
+
+          <section class="panel preference-panel">
+            <div class="chip-group" aria-label="互动关系">
+              <span class="group-label">互动关系</span>
+              <div id="relationChips"></div>
+            </div>
+
+            <div class="chip-group" aria-label="回复风格">
+              <span class="group-label">回复风格</span>
+              <div id="toneChips"></div>
+            </div>
+
+            <div class="chip-group" aria-label="听歌偏好">
+              <span class="group-label">听歌偏好</span>
+              <div id="preferenceChips"></div>
+            </div>
+          </section>
+        </section>
+
+        <section class="creator-step complete-step" data-creator-step="3" aria-labelledby="completeTitle">
+          <div class="completion-card">
+            <span class="complete-glow" aria-hidden="true"></span>
+            <img id="completionPortraitImage" src="assets/singers/xue.jpg" alt="" />
+            <p>STEP 4 · 创建完成</p>
+            <h2 id="completeTitle">薛之谦 AI 音乐分身已准备好</h2>
+            <span id="completeMode">朋友 · 更幽默 · 讲创作故事</span>
+          </div>
+          <div class="completion-summary">
+            <strong>接下来你可以</strong>
+            <span>和它聊天、听它推荐歌曲，也可以让它讲述歌曲背后的创作故事。</span>
           </div>
         </section>
 
-        <section class="panel" aria-labelledby="artistSelectTitle">
-          <div class="section-title">
-            <div>
-              <p>STEP 1</p>
-              <h2 id="artistSelectTitle">选择平台已有歌手</h2>
-            </div>
-            <span class="mini-badge">可二次定制</span>
-          </div>
-          <div class="artist-grid" id="artistGrid"></div>
-        </section>
-
-        <section class="panel profile-panel" aria-labelledby="profileTitle">
-          <div class="section-title">
-            <div>
-              <p>STEP 2</p>
-              <h2 id="profileTitle">自动填充智能体信息</h2>
-            </div>
-          </div>
-
-          <label class="field-row">
-            <span>名称</span>
-            <input id="nameInput" type="text" autocomplete="off" />
-          </label>
-
-          <label class="field-block">
-            <span>设定描述</span>
-            <textarea id="profileInput" rows="5"></textarea>
-          </label>
-
-          <div class="setting-list" aria-label="歌手智能体基础信息">
-            <div>
-              <span>代表作品</span>
-              <strong id="songsLine"></strong>
-            </div>
-            <div>
-              <span>擅长能力</span>
-              <strong id="skillsLine"></strong>
-            </div>
-          </div>
-        </section>
-
-        <section class="panel" aria-labelledby="customTitle">
-          <div class="section-title">
-            <div>
-              <p>STEP 3</p>
-              <h2 id="customTitle">按你的喜好微调</h2>
-            </div>
-          </div>
-
-          <div class="chip-group" aria-label="互动关系">
-            <span class="group-label">互动关系</span>
-            <div id="relationChips"></div>
-          </div>
-
-          <div class="chip-group" aria-label="回复风格">
-            <span class="group-label">回复风格</span>
-            <div id="toneChips"></div>
-          </div>
-
-          <div class="chip-group" aria-label="听歌偏好">
-            <span class="group-label">听歌偏好</span>
-            <div id="preferenceChips"></div>
-          </div>
-        </section>
-
-        <button class="create-button" id="createAgentButton" type="button">
-          创建智能体并开始互动
-        </button>
+        <footer class="creator-nav" aria-label="创建流程导航">
+          <button class="creator-prev" id="creatorPrevButton" type="button">上一步</button>
+          <button class="creator-next" id="creatorNextButton" type="button">下一步</button>
+          <button class="create-button" id="createAgentButton" type="button" hidden>进入聊天互动</button>
+        </footer>
       </section>
 
       <section class="screen chat-screen" id="chatScreen" aria-labelledby="chatTitle" hidden>
@@ -171,8 +195,8 @@
             <h2 id="chatTitle">薛之谦 AI 音乐分身</h2>
             <span id="chatStatus">已基于你的偏好生成</span>
           </div>
-          <button class="icon-button translucent" id="voiceToggle" type="button" aria-label="声音开关">
-            <span class="icon-sound" aria-hidden="true"></span>
+          <button class="icon-button translucent" id="voiceToggle" type="button" aria-label="智能体设置">
+            <span class="icon-settings" aria-hidden="true"></span>
           </button>
         </header>
 
