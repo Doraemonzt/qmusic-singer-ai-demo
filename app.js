@@ -160,9 +160,9 @@ function activeArtist() {
 
 function artistImage(artistId) {
   const images = {
-    xue: "assets/singers/xue.jpg",
+    xue: "assets/singers/xue.webp",
     jay: "assets/singers/jay.jpg",
-    gem: "assets/singers/gem.jpg",
+    gem: "assets/singers/gem.webp",
     jj: "assets/singers/jj.jpg",
   };
 
