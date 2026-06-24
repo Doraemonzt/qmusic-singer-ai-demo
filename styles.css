@@ -2757,9 +2757,6 @@ img.singer-card {
   overscroll-behavior: contain;
 }
 
-.chat-screen .chat-feed.has-conversation .message:nth-child(2) {
-  margin-top: auto;
-}
 
 /* Keep the singer compact and anchor new messages beside the composer. */
 .chat-portrait,

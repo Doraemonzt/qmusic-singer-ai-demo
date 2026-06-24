@@ -15,6 +15,7 @@ const artists = [
       title: "演员",
       album: "初学者",
       reason: "适合把情绪藏得很好的时候听，旋律不急着安慰你，但会把那点委屈托住。",
+      lyricQuote: "简单点，说话的方式简单点",
       lyric: "这首歌最狠的地方，是明明还在配合表演，却已经知道对方不信了。",
       story:
         "如果从创作角度看，《演员》像一场把体面维持到最后的独白。它不是直接写崩溃，而是写人在关系里如何一点点变成会控制表情的人。副歌的冲突感来自“我还在演”和“我其实很清醒”的拉扯，所以越听越像是在替自己说没说出口的话。",
@@ -36,6 +37,7 @@ const artists = [
       title: "晴天",
       album: "叶惠美",
       reason: "适合想回到某个夏天的时候听，它不会把故事说满，只留一点风和一点没讲完。",
+      lyricQuote: "故事的小黄花",
       lyric: "它像把青春里没来得及说的话，藏进一段很轻的吉他里。",
       story:
         "从创作角度看，《晴天》的动人处在于它没有把遗憾写得很重，而是让旋律保持一种明亮的透明感。听众会在里面补全自己的校园、雨天、操场和告别。它像一张被晒过的旧照片，边角有点泛白，但一看就知道那天很重要。",
@@ -57,6 +59,7 @@ const artists = [
       title: "泡沫",
       album: "Xposed",
       reason: "适合在清醒地承认失落时听，它不是软弱，而是把破碎唱得很有力量。",
+      lyricQuote: "阳光下的泡沫",
       lyric: "这首歌把脆弱唱得很亮，像承认会痛，但不把自己交出去。",
       story:
         "《泡沫》的力量来自反差：主题是易碎的，演唱却很坚定。它让听众感觉到，脆弱并不等于退后。副歌的爆发像是把压住的情绪推到光下，所以它常常被当成失落之后重新站稳的歌。",
@@ -78,6 +81,7 @@ const artists = [
       title: "修炼爱情",
       album: "因你而在",
       reason: "适合在想把情绪整理清楚的时候听，它不是把遗憾放大，而是陪你把心慢慢放稳。",
+      lyricQuote: "修炼爱情的悲欢",
       lyric: "这首歌像是在说，真正难的不是忘记，而是学会好好带着记忆往前走。",
       story:
         "从创作角度看，《修炼爱情》把失去写得很克制。它没有用过度戏剧化的表达，而是让旋律一点点把情绪托起来。副歌的力量来自一种成熟后的理解：有些感情不会消失，但人可以在音乐里重新学会呼吸。",
@@ -104,6 +108,7 @@ const state = {
   preference: "讲创作故事",
   creatorStep: 0,
   messages: [],
+  chatSessions: {},
   chatSessionArtistId: null,
   isEditingExistingAgent: false,
 };
@@ -302,7 +307,7 @@ function makeAgentReply(text) {
   if (text.includes("歌词") && (text.includes("意境") || text.includes("意象") || text.includes("哪句"))) {
     return {
       type: "lyric-analysis",
-      text: `《${artist.recommendation.title}》里很有意境的，是它没有直接说破情绪，而是用画面和关系里的动作来表达。${artist.recommendation.lyric} 这种留白会让每个人都能把自己的经历放进去。`,
+      text: `《${artist.recommendation.title}》里有一句“${artist.recommendation.lyricQuote}”。${artist.recommendation.lyric} 这句没有把情绪全部说透，而是用简短画面留下想象空间，所以会显得很有意境。`,
     };
   }
 
@@ -388,9 +393,35 @@ function renderChat({ smooth = false, revealComposer = false } = {}) {
   });
 }
 
-function addMessage(role, text, extra = {}) {
-  state.messages.push({ role, text, ...extra });
-  renderChat({ smooth: true, revealComposer: true });
+function saveActiveChatSession() {
+  const session = state.chatSessions[state.artistId];
+
+  if (!session) {
+    return;
+  }
+
+  session.messages = state.messages;
+  session.customName = elements.nameInput.value.trim() || activeArtist().agentName;
+  session.profile = elements.profileInput.value;
+  session.relation = state.relation;
+  session.tone = state.tone;
+  session.preference = state.preference;
+}
+
+function addMessage(role, text, extra = {}, artistId = state.artistId) {
+  const message = { role, text, ...extra };
+  const session = state.chatSessions[artistId];
+
+  if (artistId === state.artistId) {
+    state.messages.push(message);
+    saveActiveChatSession();
+    renderChat({ smooth: true, revealComposer: true });
+    return;
+  }
+
+  if (session) {
+    session.messages.push(message);
+  }
 }
 
 function submitPrompt(text) {
@@ -400,12 +431,14 @@ function submitPrompt(text) {
     return;
   }
 
-  addMessage("user", trimmed);
+  const sessionArtistId = state.artistId;
+  const reply = makeAgentReply(trimmed);
+
+  addMessage("user", trimmed, {}, sessionArtistId);
   elements.messageInput.value = "";
 
   window.setTimeout(() => {
-    const reply = makeAgentReply(trimmed);
-    addMessage("agent", reply.text, { song: reply.song });
+    addMessage("agent", reply.text, { song: reply.song }, sessionArtistId);
   }, 260);
 }
 
@@ -444,6 +477,7 @@ function makeIntroMessage(customName, artist) {
   };
 }
 function switchCreatedAgent(artistId) {
+  saveActiveChatSession();
   state.isEditingExistingAgent = false;
   setArtist(artistId);
   setAgentListOpen(false);
@@ -465,12 +499,49 @@ function openCreator() {
 }
 function openChat() {
   const artist = activeArtist();
-  const customName = elements.nameInput.value.trim() || artist.agentName;
-  const shouldPreserveMessages =
-    state.isEditingExistingAgent &&
-    state.messages.length > 0 &&
-    state.chatSessionArtistId === state.artistId;
-  const introMessage = makeIntroMessage(customName, artist);
+  const savedSession = state.chatSessions[state.artistId];
+  const isEditingSession = state.isEditingExistingAgent;
+  const customName = isEditingSession
+    ? elements.nameInput.value.trim() || savedSession?.customName || artist.agentName
+    : savedSession?.customName || elements.nameInput.value.trim() || artist.agentName;
+
+  if (savedSession) {
+    state.messages = savedSession.messages;
+
+    if (isEditingSession) {
+      savedSession.customName = customName;
+      savedSession.profile = elements.profileInput.value;
+      savedSession.relation = state.relation;
+      savedSession.tone = state.tone;
+      savedSession.preference = state.preference;
+    } else {
+      state.relation = savedSession.relation;
+      state.tone = savedSession.tone;
+      state.preference = savedSession.preference;
+      elements.nameInput.value = savedSession.customName;
+      elements.profileInput.value = savedSession.profile;
+    }
+  } else {
+    state.messages = [makeIntroMessage(customName, artist)];
+    state.chatSessions[state.artistId] = {
+      messages: state.messages,
+      customName,
+      profile: elements.profileInput.value || artist.description,
+      relation: state.relation,
+      tone: state.tone,
+      preference: state.preference,
+    };
+  }
+
+  if (state.isEditingExistingAgent) {
+    const existingIntro = state.messages.find((message) => message.kind === "intro");
+
+    if (existingIntro) {
+      existingIntro.text = makeIntroMessage(customName, artist).text;
+    }
+
+    saveActiveChatSession();
+  }
 
   elements.creatorScreen.hidden = true;
   elements.chatScreen.hidden = false;
@@ -481,16 +552,6 @@ function openChat() {
   elements.chatPortraitImage.src = artistImage(artist.id);
   elements.agentMode.textContent = `${state.relation} · ${state.tone} · ${state.preference}`;
   elements.agentOpening.textContent = artist.opening;
-
-  if (shouldPreserveMessages) {
-    const existingIntro = state.messages.find((message) => message.kind === "intro");
-
-    if (existingIntro) {
-      existingIntro.text = introMessage.text;
-    }
-  } else {
-    state.messages = [introMessage];
-  }
 
   state.chatSessionArtistId = state.artistId;
   state.isEditingExistingAgent = false;
