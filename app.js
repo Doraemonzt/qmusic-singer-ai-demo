@@ -366,21 +366,31 @@ function messageTemplate(message) {
   `;
 }
 
-function renderChat({ smooth = false } = {}) {
+function renderChat({ smooth = false, revealComposer = false } = {}) {
   elements.chatFeed.innerHTML = state.messages.map(messageTemplate).join("");
   elements.chatFeed.classList.toggle("has-conversation", state.messages.length > 1);
 
   window.requestAnimationFrame(() => {
+    const behavior = smooth ? "smooth" : "auto";
+
     elements.chatFeed.scrollTo({
       top: elements.chatFeed.scrollHeight,
-      behavior: smooth ? "smooth" : "auto",
+      behavior,
     });
+
+    if (revealComposer) {
+      elements.composer.scrollIntoView({
+        behavior,
+        block: "end",
+        inline: "nearest",
+      });
+    }
   });
 }
 
 function addMessage(role, text, extra = {}) {
   state.messages.push({ role, text, ...extra });
-  renderChat({ smooth: true });
+  renderChat({ smooth: true, revealComposer: true });
 }
 
 function submitPrompt(text) {

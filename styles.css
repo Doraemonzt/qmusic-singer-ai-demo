@@ -2781,3 +2781,11 @@ img.singer-card {
     margin-top: min(24vh, 12rem);
   }
 }
+/* Keep the mobile composer inside the dynamic browser viewport. */
+@media (max-width: 759px) {
+  .chat-screen {
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+  }
+}
