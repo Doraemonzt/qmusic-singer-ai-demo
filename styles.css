@@ -1948,7 +1948,16 @@ button {
 
 .home-screen .singer-strip article {
   flex: 0 0 4.85rem;
+  justify-items: center;
+  text-align: center;
   scroll-snap-align: start;
+}
+
+.home-screen .singer-strip strong,
+.home-screen .singer-strip em {
+  display: block;
+  width: 100%;
+  text-align: center;
 }
 
 .home-screen .singer-card {
@@ -2351,7 +2360,15 @@ img.singer-card {
   bottom: 2rem;
   left: 50%;
   z-index: 2;
+  width: max-content;
+  min-width: 6.8rem;
+  justify-content: center;
+  white-space: nowrap;
   transform: translateX(-50%);
+}
+
+.home-screen .listening-badge i {
+  flex: 0 0 auto;
 }
 
 @media (max-width: 390px) {
@@ -2730,16 +2747,18 @@ img.singer-card {
   }
 }
 
-/* Keep chat messages close to the intro area */
+/* Keep the intro stable while new messages collect above the composer. */
 .chat-screen .chat-feed {
-  align-content: start;
+  display: flex;
+  flex-direction: column;
+  align-content: initial;
   padding-top: 0;
   scroll-behavior: smooth;
   overscroll-behavior: contain;
 }
 
-.chat-screen .chat-feed.has-conversation {
-  align-content: end;
+.chat-screen .chat-feed.has-conversation .message:nth-child(2) {
+  margin-top: auto;
 }
 
 /* Keep the singer compact and anchor new messages beside the composer. */
