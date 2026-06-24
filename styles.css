@@ -2791,9 +2791,9 @@ img.singer-card {
   position: relative;
   z-index: 4;
   display: grid;
-  grid-template-columns: 5.25rem minmax(0, 1fr);
+  grid-template-columns: 4.15rem minmax(0, 1fr);
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.55rem;
   min-width: 0;
 }
 
@@ -2804,8 +2804,8 @@ img.singer-card {
 .chat-profile .chat-portrait {
   position: static;
   display: block;
-  width: 5.25rem;
-  height: 6.25rem;
+  width: 4.15rem;
+  height: 4.85rem;
   aspect-ratio: auto;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 0.9rem;
@@ -2820,31 +2820,36 @@ img.singer-card {
   align-content: center;
   width: 100%;
   margin-top: 0;
-  padding: 0.72rem 0.78rem;
+  padding: 0.5rem 0.62rem;
+}
+
+.chat-profile .agent-intro span {
+  font-size: 0.68rem;
+  line-height: 1.25;
 }
 
 .chat-profile .agent-intro p {
-  font-size: 0.9rem;
-  line-height: 1.45;
+  font-size: 0.82rem;
+  line-height: 1.38;
 }
 
 @media (max-width: 360px) {
   .chat-profile {
-    grid-template-columns: 4.7rem minmax(0, 1fr);
-    gap: 0.58rem;
+    grid-template-columns: 3.8rem minmax(0, 1fr);
+    gap: 0.48rem;
   }
 
   .chat-profile .chat-portrait {
-    width: 4.7rem;
-    height: 5.65rem;
+    width: 3.8rem;
+    height: 4.5rem;
   }
 
   .chat-profile .agent-intro {
     margin-top: 0;
-    padding: 0.62rem 0.68rem;
+    padding: 0.45rem 0.55rem;
   }
 
   .chat-profile .agent-intro p {
-    font-size: 0.84rem;
+    font-size: 0.78rem;
   }
 }
