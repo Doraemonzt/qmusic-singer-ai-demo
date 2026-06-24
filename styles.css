@@ -2789,3 +2789,65 @@ img.singer-card {
     max-height: 100dvh;
   }
 }
+/* Compact horizontal singer profile leaves more room for conversation. */
+.chat-profile {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: 5.25rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+}
+
+.chat-backdrop::before {
+  display: none;
+}
+
+.chat-profile .chat-portrait {
+  position: static;
+  display: block;
+  width: 5.25rem;
+  height: 6.25rem;
+  aspect-ratio: auto;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 0.9rem;
+  object-fit: cover;
+  object-position: center top;
+  box-shadow: 0 0.8rem 1.8rem rgba(2, 8, 23, 0.24);
+  transform: none;
+}
+
+.chat-profile .agent-intro {
+  align-self: stretch;
+  align-content: center;
+  width: 100%;
+  margin-top: 0;
+  padding: 0.72rem 0.78rem;
+}
+
+.chat-profile .agent-intro p {
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 360px) {
+  .chat-profile {
+    grid-template-columns: 4.7rem minmax(0, 1fr);
+    gap: 0.58rem;
+  }
+
+  .chat-profile .chat-portrait {
+    width: 4.7rem;
+    height: 5.65rem;
+  }
+
+  .chat-profile .agent-intro {
+    margin-top: 0;
+    padding: 0.62rem 0.68rem;
+  }
+
+  .chat-profile .agent-intro p {
+    font-size: 0.84rem;
+  }
+}

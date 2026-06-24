@@ -186,7 +186,7 @@
       </section>
 
       <section class="screen chat-screen" id="chatScreen" aria-labelledby="chatTitle" hidden>
-        <div class="chat-backdrop" id="chatBackdrop" aria-hidden="true"><img id="chatPortraitImage" class="chat-portrait" src="assets/singers/xue.webp" alt="" /></div>
+        <div class="chat-backdrop" id="chatBackdrop" aria-hidden="true"></div>
         <header class="chat-header">
           <button class="icon-button translucent" id="backToCreator" type="button" aria-label="已创建 AI 歌手列表">
             <span class="icon-menu" aria-hidden="true"></span>
@@ -200,10 +200,13 @@
           </button>
         </header>
 
-        <div class="agent-intro">
-          <span id="agentMode">朋友 · 幽默 · 多讲歌词</span>
-          <p id="agentOpening">我已经准备好陪你听歌了。今天想听点嘴硬的，还是想听点能把情绪放下的？</p>
-        </div>
+        <section class="chat-profile" aria-label="当前 AI 歌手介绍">
+          <img id="chatPortraitImage" class="chat-portrait" src="assets/singers/xue.webp" alt="" />
+          <div class="agent-intro">
+            <span id="agentMode">朋友 · 幽默 · 多讲歌词</span>
+            <p id="agentOpening">我已经准备好陪你听歌了。今天想听点嘴硬的，还是想听点能把情绪放下的？</p>
+          </div>
+        </section>
 
         <div class="chat-feed" id="chatFeed" aria-live="polite"></div>
 
