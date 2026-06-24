@@ -93,8 +93,8 @@ const options = {
 const quickPrompts = [
   "我今天有点累，想听点能缓下来的歌",
   "讲讲这首歌背后的创作故事",
-  "换一首冷门一点的歌",
-  "把我的心情改写成副歌",
+  "哪些歌词比较有意境",
+  "唱的好好听，好喜欢你",
 ];
 
 const state = {
@@ -284,14 +284,36 @@ function makeAgentReply(text) {
   const artist = activeArtist();
   const lowerText = text.toLowerCase();
 
-  if (text.includes("创作") || text.includes("故事") || text.includes("背后")) {
+  if (text.includes("累") || text.includes("缓下来") || text.includes("放松")) {
     return {
-      type: "story",
-      text: artist.recommendation.story,
+      type: "comfort",
+      text: `听起来今天消耗了不少。先不用急着振作，我想给你放《${artist.recommendation.title}》。${artist.recommendation.reason}`,
+      song: artist.recommendation,
     };
   }
 
-  if (text.includes("改写") || text.includes("副歌") || text.includes("歌词")) {
+  if (text.includes("创作") || text.includes("故事") || text.includes("背后")) {
+    return {
+      type: "story",
+      text: `关于《${artist.recommendation.title}》的创作表达，可以这样理解：${artist.recommendation.story}`,
+    };
+  }
+
+  if (text.includes("歌词") && (text.includes("意境") || text.includes("意象") || text.includes("哪句"))) {
+    return {
+      type: "lyric-analysis",
+      text: `《${artist.recommendation.title}》里很有意境的，是它没有直接说破情绪，而是用画面和关系里的动作来表达。${artist.recommendation.lyric} 这种留白会让每个人都能把自己的经历放进去。`,
+    };
+  }
+
+  if (text.includes("喜欢") || text.includes("好听")) {
+    return {
+      type: "affection",
+      text: `谢谢你喜欢这段演唱，听到这句话真的很开心。那就让《${artist.recommendation.title}》再陪你一会儿，也希望下一首歌还能唱进你的心情里。`,
+    };
+  }
+
+  if (text.includes("改写") || text.includes("副歌")) {
     return {
       type: "lyric",
       text: `如果把你的心情写成副歌，我会让它先轻一点，再在最后一句落下来：别急着变好，也别假装没事，先把今晚完整地听完。`,
@@ -344,14 +366,21 @@ function messageTemplate(message) {
   `;
 }
 
-function renderChat() {
+function renderChat({ smooth = false } = {}) {
   elements.chatFeed.innerHTML = state.messages.map(messageTemplate).join("");
-  elements.chatFeed.scrollTop = elements.chatFeed.scrollHeight;
+  elements.chatFeed.classList.toggle("has-conversation", state.messages.length > 1);
+
+  window.requestAnimationFrame(() => {
+    elements.chatFeed.scrollTo({
+      top: elements.chatFeed.scrollHeight,
+      behavior: smooth ? "smooth" : "auto",
+    });
+  });
 }
 
 function addMessage(role, text, extra = {}) {
   state.messages.push({ role, text, ...extra });
-  renderChat();
+  renderChat({ smooth: true });
 }
 
 function submitPrompt(text) {

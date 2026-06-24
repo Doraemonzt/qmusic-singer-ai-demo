@@ -2734,4 +2734,31 @@ img.singer-card {
 .chat-screen .chat-feed {
   align-content: start;
   padding-top: 0;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+.chat-screen .chat-feed.has-conversation {
+  align-content: end;
+}
+
+/* Keep the singer compact and anchor new messages beside the composer. */
+.chat-portrait,
+.chat-backdrop::before {
+  width: min(48vw, 9.5rem);
+}
+
+.chat-screen .agent-intro {
+  margin-top: min(25vh, 13rem);
+}
+
+@media (max-width: 360px) {
+  .chat-portrait,
+  .chat-backdrop::before {
+    width: min(50vw, 9rem);
+  }
+
+  .chat-screen .agent-intro {
+    margin-top: min(24vh, 12rem);
+  }
 }
